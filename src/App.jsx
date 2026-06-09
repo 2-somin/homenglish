@@ -26,8 +26,9 @@ export default function App() {
           <Route path="/types" element={<Navigate to="/types/free" replace />} />
           <Route path="/types/:type" element={<Contents mode="type" />} />
 
-          {/* 소개 */}
+          {/* 소개 / 기타 */}
           <Route path="/about" element={<About />} />
+          <Route path="/level-test" element={<SimplePage title="레벨테스트" />} />
           <Route path="/guide" element={<SimplePage title="이용안내" />} />
           <Route path="/privacy" element={<SimplePage title="개인정보처리방침" />} />
 

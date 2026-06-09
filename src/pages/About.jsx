@@ -1,130 +1,147 @@
 import { Link } from 'react-router-dom'
-import { site } from '../data/site'
+import { site, faqs } from '../data/site'
+import { useState } from 'react'
 
-const features = [
-  {
-    emoji: '🆓',
-    title: '무료 콘텐츠 제공',
-    desc: '양질의 무료 영어 교육 자료를 엄선하여 소개합니다. 비용 부담 없이 시작하세요.',
-    color: 'bg-palette-mint',
-  },
-  {
-    emoji: '📱',
-    title: '다양한 유형',
-    desc: '영상, 워크시트, 앱, 책 등 아이의 학습 스타일에 맞는 다양한 형태로 제공됩니다.',
-    color: 'bg-palette-blue',
-  },
-  {
-    emoji: '🎯',
-    title: '주제별 분류',
-    desc: '스피킹, 리스닝, 리딩, 라이팅, 단어, 문법으로 체계적으로 분류되어 있습니다.',
-    color: 'bg-palette-yellow',
-  },
-  {
-    emoji: '👶',
-    title: '연령별 맞춤',
-    desc: '유아부터 초등 고학년까지, 아이의 연령과 수준에 맞는 콘텐츠를 찾을 수 있어요.',
-    color: 'bg-palette-peach',
-  },
-  {
-    emoji: '📋',
-    title: '노션 상세 페이지',
-    desc: '각 콘텐츠마다 노션으로 연결되는 상세 안내 페이지가 준비되어 있습니다.',
-    color: 'bg-palette-mint',
-  },
-  {
-    emoji: '🔄',
-    title: '지속적인 업데이트',
-    desc: '새로운 교육 콘텐츠를 꾸준히 추가하고 업데이트합니다.',
-    color: 'bg-palette-blue',
-  },
+const timeline = [
+  { year: '2024', text: '홈글리시 서비스 기획 시작' },
+  { year: '2025', text: '임팩트닷 커리어 프로젝트 선정' },
+  { year: '2025', text: '하나소셜유니버시티 협력' },
+  { year: '2026', text: '홈글리시 플랫폼 정식 오픈' },
 ]
 
 export default function About() {
+  const [open, setOpen] = useState(null)
+
   return (
     <div>
       {/* 배너 */}
-      <div className="bg-brand dark:bg-brand-dark py-14 md:py-20 transition-colors">
+      <div className="bg-brand dark:bg-brand-dark py-16 md:py-24 transition-colors">
         <div className="max-w-container mx-auto section-x text-white">
-          <nav className="text-xs text-white/60 mb-4 flex items-center gap-2">
+          <nav className="text-xs text-white/50 mb-4 flex items-center gap-2">
             <Link to="/" className="hover:underline">홈</Link>
             <span>›</span>
-            <span>사이트 소개</span>
+            <span>홈글리시 소개</span>
           </nav>
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4">키즈잉글리시 소개</h1>
+          <p className="text-palette-yellow text-sm font-bold tracking-widest uppercase mb-3">About</p>
+          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+            홈글리시 소개
+          </h1>
           <p className="text-white/80 max-w-2xl text-base md:text-lg leading-relaxed">
             {site.description}
           </p>
         </div>
       </div>
 
-      {/* 소개 본문 */}
-      <div className="max-w-container mx-auto section-x py-14 md:py-20">
-        {/* 소개 글 */}
-        <div className="max-w-3xl mb-16">
+      <div className="max-w-container mx-auto section-x py-16 md:py-24">
+
+        {/* 서비스 소개 */}
+        <div className="max-w-3xl mb-20">
           <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-6">
-            키즈잉글리시는 어떤 곳인가요?
+            홈글리시는 어떤 플랫폼인가요?
           </h2>
           <div className="space-y-4 text-neutral-600 dark:text-neutral-300 leading-relaxed text-base md:text-lg">
             <p>
-              키즈잉글리시는 부모님과 선생님이 아이들의 영어 학습을 위한 <strong className="text-brand dark:text-brand-light">양질의 교육 콘텐츠를 쉽게 찾을 수 있도록</strong> 도와주는 큐레이션 플랫폼입니다.
+              홈글리시는 <strong className="text-brand dark:text-brand-light">부모와 아이가 함께하는 영어 가정학습의 모든 것</strong>을 담은 플랫폼입니다.
             </p>
             <p>
-              인터넷에는 수많은 영어 교육 자료가 있지만, 아이에게 맞는 자료를 찾는 데 많은 시간이 필요합니다. 키즈잉글리시는 검증된 자료만을 엄선하여 주제별, 유형별, 연령별로 정리해 제공합니다.
+              검증된 영어 자료, 선배맘 노하우, 레벨별 가이드를 한 곳에 모아 <strong className="text-brand dark:text-brand-light">사교육비 부담 없이도 영어 학습을 지속</strong>할 수 있게 도와줍니다.
             </p>
             <p>
-              각 콘텐츠는 노션으로 연결되는 상세 안내 페이지를 통해 자료 소개, 사용 방법, 관련 워크시트 등 풍부한 정보를 확인할 수 있습니다.
+              영어 가정학습을 먼저 실천한 선배맘들의 실제 경험담을 콘텐츠 후기로 확인하고, 우리 아이에게 맞는 자료와 학습법을 찾아보세요.
             </p>
           </div>
         </div>
 
-        {/* 특징 카드 */}
-        <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-8">
-          주요 특징
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
-          {features.map((f) => (
-            <div
-              key={f.title}
-              className="card p-6 flex gap-4 items-start"
-            >
-              <div className={`${f.color} w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0`}>
-                {f.emoji}
-              </div>
-              <div>
-                <h3 className="font-bold text-neutral-800 dark:text-neutral-100 mb-1">{f.title}</h3>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">{f.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* 이용 안내 */}
-        <div className="bg-surface-2 dark:bg-surface-2dark rounded-2xl p-8 md:p-10 transition-colors">
-          <h2 className="text-xl md:text-2xl font-extrabold text-brand dark:text-brand-light mb-6">
-            이용 방법
+        {/* 10분의 1 프로젝트 */}
+        <div className="bg-brand dark:bg-brand-dark rounded-3xl p-8 md:p-12 mb-20 transition-colors">
+          <p className="text-palette-yellow text-xs font-bold tracking-widest uppercase mb-3">
+            임팩트닷 커리어 프로젝트 선정
+          </p>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-4">
+            10분의 1 프로젝트
           </h2>
-          <ol className="space-y-4">
-            {[
-              '상단 메뉴에서 "주제별 콘텐츠" 또는 "유형별 콘텐츠"를 선택하세요.',
-              '원하는 카테고리나 유형을 선택해 콘텐츠 목록을 확인하세요.',
-              '마음에 드는 콘텐츠 카드를 클릭하면 노션 상세 페이지로 이동합니다.',
-              '상세 페이지에서 콘텐츠 소개, 이용 방법, 관련 자료를 확인하세요.',
-            ].map((step, i) => (
-              <li key={i} className="flex items-start gap-4">
-                <span className="w-7 h-7 rounded-full bg-brand dark:bg-brand-light text-white dark:text-bg-dark text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">
-                  {i + 1}
-                </span>
-                <p className="text-neutral-600 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-                  {step}
-                </p>
-              </li>
-            ))}
-          </ol>
+          <p className="text-white/80 text-base md:text-lg leading-relaxed mb-6 max-w-2xl">
+            {site.mission}
+          </p>
+          <p className="text-white/60 text-sm leading-relaxed max-w-xl">
+            사교육비 부담 없이 가정에서도 영어를 완성할 수 있다는 믿음으로 시작했습니다.
+            선배맘들의 노하우가 쌓이면 더 많은 가정이 혜택을 받을 수 있어요.
+          </p>
+          {timeline.length > 0 && (
+            <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {timeline.map((t) => (
+                <div key={t.text} className="bg-white/10 rounded-xl p-4">
+                  <p className="text-palette-yellow font-black text-sm mb-1">{t.year}</p>
+                  <p className="text-white/80 text-xs leading-snug">{t.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* CTA */}
-        <div className="mt-12 text-center">
+        {/* 이런 분들에게 */}
+        <div className="mb-20">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-8">
+            이런 가정에 잘 맞아요
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {[
+              { emoji: '👩‍👧', text: '아이에게 영어를 집에서 가르쳐보고 싶은 부모' },
+              { emoji: '💰', text: '사교육비 부담을 줄이고 싶은 가정' },
+              { emoji: '🤔', text: '정보는 많지만 무엇부터 해야 할지 몰라 헤매는 부모' },
+              { emoji: '🎯', text: '아이 수준에 맞는 자료와 학습 방법을 찾고 싶은 가정' },
+            ].map((item) => (
+              <div key={item.text} className="card p-5 flex items-center gap-4">
+                <span className="text-3xl shrink-0">{item.emoji}</span>
+                <p className="text-neutral-700 dark:text-neutral-200 font-medium text-sm md:text-base leading-snug">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* FAQ */}
+        <div className="mb-16">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-8">
+            자주 묻는 질문
+          </h2>
+          <div className="space-y-3 max-w-3xl">
+            {faqs.map((faq, i) => (
+              <div
+                key={i}
+                className="border border-neutral-200 dark:border-neutral-700 rounded-2xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpen(open === i ? null : i)}
+                  className="w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-neutral-800 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition text-sm md:text-base"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="text-brand dark:text-brand-light font-black text-xs">Q</span>
+                    {faq.q}
+                  </span>
+                  <span className={`text-neutral-400 transition-transform duration-200 ${open === i ? 'rotate-180' : ''}`}>▾</span>
+                </button>
+                {open === i && (
+                  <div className="px-6 pb-5 pt-1 bg-bg dark:bg-bg-dark text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed border-t border-neutral-100 dark:border-neutral-700">
+                    <span className="text-brand dark:text-brand-light font-black text-xs mr-3">A</span>
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="mt-6 text-sm text-neutral-400 dark:text-neutral-500">
+            더 궁금한 점은{' '}
+            <a href={`mailto:${site.contact.email}`} className="text-brand dark:text-brand-light font-semibold hover:underline">
+              {site.contact.email}
+            </a>
+            로 문의해 주세요.
+          </p>
+        </div>
+
+        <div className="text-center">
           <Link
             to="/contents/all"
             className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-bold px-8 py-4 rounded-full hover:opacity-90 transition shadow-lg text-base"

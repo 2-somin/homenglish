@@ -39,18 +39,14 @@ export default function ContentCard({ item }) {
           {item.emoji}
         </span>
 
-        {/* 무료/유료 뱃지 */}
-        <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
+        {/* 상단 우측: 무료/유료 + 카테고리 */}
+        <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
           {item.types.includes('free') && (
             <span className="badge badge-free text-[11px]">무료</span>
           )}
           {item.types.includes('paid') && (
             <span className="badge badge-paid text-[11px]">유료</span>
           )}
-        </div>
-
-        {/* 카테고리 */}
-        <div className="absolute top-3 right-3">
           <span className="text-xs font-bold bg-white/80 dark:bg-neutral-800/80 text-neutral-700 dark:text-neutral-200 px-2 py-1 rounded-full">
             {cat?.emoji} {cat?.label}
           </span>
@@ -66,22 +62,20 @@ export default function ContentCard({ item }) {
           {item.description}
         </p>
 
-        {/* 하단: 유형 태그 + 연령 */}
-        <div className="mt-3 flex items-center justify-between gap-2">
-          <div className="flex gap-1 flex-wrap">
-            {item.types
-              .filter((t) => t !== 'free' && t !== 'paid')
-              .slice(0, 2)
-              .map((t) => {
-                const meta = types[t]
-                return (
-                  <span key={t} className={`badge ${meta?.badgeClass || ''} text-[10px]`}>
-                    {meta?.emoji} {meta?.label}
-                  </span>
-                )
-              })}
-          </div>
-          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${grade.color}`}>
+        {/* 하단 좌측: 유형 태그 + 연령 모두 왼쪽 정렬 */}
+        <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+          {item.types
+            .filter((t) => t !== 'free' && t !== 'paid')
+            .slice(0, 2)
+            .map((t) => {
+              const meta = types[t]
+              return (
+                <span key={t} className={`badge ${meta?.badgeClass || ''} text-[10px]`}>
+                  {meta?.emoji} {meta?.label}
+                </span>
+              )
+            })}
+          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${grade.color}`}>
             {grade.label}
           </span>
         </div>

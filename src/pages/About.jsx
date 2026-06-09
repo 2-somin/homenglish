@@ -1,100 +1,138 @@
-import { useParams, Navigate } from 'react-router-dom'
-import SubPageLayout from '../components/SubPageLayout'
-import Placeholder from '../components/Placeholder'
+import { Link } from 'react-router-dom'
+import { site } from '../data/site'
 
-const tabs = [
-  { label: 'CEO 인사말', to: '/about/greetings' },
-  { label: '비전/가치', to: '/about/vision' },
-  { label: '연혁', to: '/about/history' },
-  { label: '브랜드소개', to: '/about/brand' },
+const features = [
+  {
+    emoji: '🆓',
+    title: '무료 콘텐츠 제공',
+    desc: '양질의 무료 영어 교육 자료를 엄선하여 소개합니다. 비용 부담 없이 시작하세요.',
+    color: 'bg-palette-mint',
+  },
+  {
+    emoji: '📱',
+    title: '다양한 유형',
+    desc: '영상, 워크시트, 앱, 책 등 아이의 학습 스타일에 맞는 다양한 형태로 제공됩니다.',
+    color: 'bg-palette-blue',
+  },
+  {
+    emoji: '🎯',
+    title: '주제별 분류',
+    desc: '스피킹, 리스닝, 리딩, 라이팅, 단어, 문법으로 체계적으로 분류되어 있습니다.',
+    color: 'bg-palette-yellow',
+  },
+  {
+    emoji: '👶',
+    title: '연령별 맞춤',
+    desc: '유아부터 초등 고학년까지, 아이의 연령과 수준에 맞는 콘텐츠를 찾을 수 있어요.',
+    color: 'bg-palette-peach',
+  },
+  {
+    emoji: '📋',
+    title: '노션 상세 페이지',
+    desc: '각 콘텐츠마다 노션으로 연결되는 상세 안내 페이지가 준비되어 있습니다.',
+    color: 'bg-palette-mint',
+  },
+  {
+    emoji: '🔄',
+    title: '지속적인 업데이트',
+    desc: '새로운 교육 콘텐츠를 꾸준히 추가하고 업데이트합니다.',
+    color: 'bg-palette-blue',
+  },
 ]
-
-const pages = {
-  greetings: { headLabel: 'Greetings', en: 'CEO Message', title: 'CEO 인사말' },
-  vision: { headLabel: 'Vision', en: 'Vision & Value', title: '비전/가치' },
-  history: { headLabel: 'History', en: 'History', title: '연혁' },
-  brand: { headLabel: 'Brand', en: 'Brand', title: '브랜드소개' },
-}
-
-// 연혁 데모 데이터
-const history = [
-  { year: '2026', events: ['홈페이지 리뉴얼 오픈', 'ISO 9001 인증 갱신'] },
-  { year: '2020', events: ['해외사업 본격 진출', '플랜트사업부 신설'] },
-  { year: '2010', events: ['충남도청신도시 지하차도 건설 수주'] },
-  { year: '1998', events: ['ISO 9001 품질경영시스템 최초 인증'] },
-]
-
-function Greetings() {
-  return (
-    <div className="flex flex-col gap-12 md:flex-row md:gap-16">
-      <div className="w-full md:w-2/5">
-        <Placeholder label="CEO PHOTO" ratio="4/5" rounded />
-      </div>
-      <div className="flex-1">
-        <p className="mb-8 text-3xl font-bold leading-snug text-brand md:text-4xl">
-          신뢰와 기술로
-          <br />
-          내일의 가치를 짓습니다.
-        </p>
-        <div className="space-y-5 text-lg font-medium leading-8 text-neutral-700">
-          <p>
-            안녕하십니까. 진흥기업 홈페이지를 찾아주신 여러분께 진심으로 감사드립니다.
-            저희는 반세기가 넘는 시간 동안 주택, 건축, 토목, 플랜트 전 영역에서 축적한 기술력과
-            노하우로 고객의 신뢰에 보답해 왔습니다.
-          </p>
-          <p>
-            앞으로도 사람이 머무는 공간과 그 공간을 둘러싼 환경까지 함께 설계하며, 도시와 자연이
-            균형을 이루는 지속 가능한 미래를 만들어가겠습니다. 변함없는 관심과 성원을 부탁드립니다.
-          </p>
-          <p className="pt-4 font-bold text-neutral-900">진흥기업 대표이사</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function History() {
-  return (
-    <div className="flex flex-col gap-10">
-      {history.map((h) => (
-        <div
-          key={h.year}
-          className="flex flex-col gap-4 border-b border-neutral-200 pb-8 md:flex-row md:gap-16"
-        >
-          <p className="text-4xl font-bold text-brand md:w-40">{h.year}</p>
-          <ul className="flex flex-1 flex-col gap-2 text-lg font-medium text-neutral-700">
-            {h.events.map((e, i) => (
-              <li key={i}>· {e}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export default function About() {
-  const { tab } = useParams()
-  const meta = pages[tab]
-  if (!meta) return <Navigate to="/about/greetings" replace />
-
   return (
-    <SubPageLayout sectionTitle="회사소개" headLabel={meta.headLabel} tabs={tabs}>
-      <div className="mx-auto max-w-container px-4 md:px-10 lg:px-40">
-        <p className="mb-16 text-5xl font-semibold leading-none text-brand md:text-7xl">
-          {meta.en}
-        </p>
-        {tab === 'greetings' && <Greetings />}
-        {tab === 'history' && <History />}
-        {(tab === 'vision' || tab === 'brand') && (
-          <>
-            <p className="mb-10 text-lg font-medium leading-8 text-neutral-700">
-              {meta.title} 콘텐츠가 들어갈 영역입니다. 실제 운영 시 내용으로 교체하세요.
-            </p>
-            <Placeholder label={`${meta.title} CONTENT`} ratio="21/9" rounded />
-          </>
-        )}
+    <div>
+      {/* 배너 */}
+      <div className="bg-brand dark:bg-brand-dark py-14 md:py-20 transition-colors">
+        <div className="max-w-container mx-auto section-x text-white">
+          <nav className="text-xs text-white/60 mb-4 flex items-center gap-2">
+            <Link to="/" className="hover:underline">홈</Link>
+            <span>›</span>
+            <span>사이트 소개</span>
+          </nav>
+          <h1 className="text-3xl md:text-5xl font-extrabold mb-4">키즈잉글리시 소개</h1>
+          <p className="text-white/80 max-w-2xl text-base md:text-lg leading-relaxed">
+            {site.description}
+          </p>
+        </div>
       </div>
-    </SubPageLayout>
+
+      {/* 소개 본문 */}
+      <div className="max-w-container mx-auto section-x py-14 md:py-20">
+        {/* 소개 글 */}
+        <div className="max-w-3xl mb-16">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-6">
+            키즈잉글리시는 어떤 곳인가요?
+          </h2>
+          <div className="space-y-4 text-neutral-600 dark:text-neutral-300 leading-relaxed text-base md:text-lg">
+            <p>
+              키즈잉글리시는 부모님과 선생님이 아이들의 영어 학습을 위한 <strong className="text-brand dark:text-brand-light">양질의 교육 콘텐츠를 쉽게 찾을 수 있도록</strong> 도와주는 큐레이션 플랫폼입니다.
+            </p>
+            <p>
+              인터넷에는 수많은 영어 교육 자료가 있지만, 아이에게 맞는 자료를 찾는 데 많은 시간이 필요합니다. 키즈잉글리시는 검증된 자료만을 엄선하여 주제별, 유형별, 연령별로 정리해 제공합니다.
+            </p>
+            <p>
+              각 콘텐츠는 노션으로 연결되는 상세 안내 페이지를 통해 자료 소개, 사용 방법, 관련 워크시트 등 풍부한 정보를 확인할 수 있습니다.
+            </p>
+          </div>
+        </div>
+
+        {/* 특징 카드 */}
+        <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-8">
+          주요 특징
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
+          {features.map((f) => (
+            <div
+              key={f.title}
+              className="card p-6 flex gap-4 items-start"
+            >
+              <div className={`${f.color} w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0`}>
+                {f.emoji}
+              </div>
+              <div>
+                <h3 className="font-bold text-neutral-800 dark:text-neutral-100 mb-1">{f.title}</h3>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">{f.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 이용 안내 */}
+        <div className="bg-surface-2 dark:bg-surface-2dark rounded-2xl p-8 md:p-10 transition-colors">
+          <h2 className="text-xl md:text-2xl font-extrabold text-brand dark:text-brand-light mb-6">
+            이용 방법
+          </h2>
+          <ol className="space-y-4">
+            {[
+              '상단 메뉴에서 "주제별 콘텐츠" 또는 "유형별 콘텐츠"를 선택하세요.',
+              '원하는 카테고리나 유형을 선택해 콘텐츠 목록을 확인하세요.',
+              '마음에 드는 콘텐츠 카드를 클릭하면 노션 상세 페이지로 이동합니다.',
+              '상세 페이지에서 콘텐츠 소개, 이용 방법, 관련 자료를 확인하세요.',
+            ].map((step, i) => (
+              <li key={i} className="flex items-start gap-4">
+                <span className="w-7 h-7 rounded-full bg-brand dark:bg-brand-light text-white dark:text-bg-dark text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  {i + 1}
+                </span>
+                <p className="text-neutral-600 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                  {step}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 text-center">
+          <Link
+            to="/contents/all"
+            className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-bold px-8 py-4 rounded-full hover:opacity-90 transition shadow-lg text-base"
+          >
+            콘텐츠 둘러보기 →
+          </Link>
+        </div>
+      </div>
+    </div>
   )
 }

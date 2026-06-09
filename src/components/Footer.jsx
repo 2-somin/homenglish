@@ -1,95 +1,126 @@
 import { Link } from 'react-router-dom'
-import { company } from '../data/site'
-import Placeholder from './Placeholder'
+import { site, categories, types } from '../data/site'
 
-// ============================================================
-// 푸터 — 상단: 로고 + 회사 소개문 / 하단: 주소·Family site·정책링크
-// ============================================================
 export default function Footer() {
   return (
-    <footer className="relative">
-      {/* 상단 소개 영역 */}
-      <div className="mx-auto max-w-container px-4 py-20 md:px-10 lg:px-40">
-        <div className="flex flex-col items-start gap-8 md:flex-row md:items-center">
-          <div className="w-56 shrink-0">
-            <Placeholder label="LOGO" ratio="16/5" />
-          </div>
-          <div className="flex-grow text-base leading-7 text-neutral-700 md:text-[1.05rem]">
-            {company.intro.map((p, i) => (
-              <p key={i} className="mb-4 last:mb-0">
-                {p}
-              </p>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 하단 다크 영역 */}
-      <div className="bg-black px-4 py-12 md:px-10 lg:px-40">
-        <div className="mx-auto flex max-w-container flex-col gap-10">
-          <div className="flex flex-col justify-between gap-8 md:flex-row">
-            {/* 주소 */}
-            <div className="flex flex-col gap-2.5 text-sm">
-              {company.offices.map((o) => (
-                <div
-                  key={o.label}
-                  className="flex flex-col gap-1 md:flex-row md:gap-8"
-                >
-                  <div className="w-14 shrink-0 font-bold text-neutral-200">
-                    {o.label}
-                  </div>
-                  <ul className="flex flex-col gap-1 font-medium text-neutral-400 md:flex-row md:gap-8">
-                    <li className="md:w-60">{o.address}</li>
-                    <li className="md:w-32">Tel : {o.tel}</li>
-                    <li>Fax : {o.fax}</li>
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            {/* Family site */}
-            <div className="w-full md:w-56">
-              <select
-                aria-label="Family site"
-                className="w-full rounded border border-zinc-600 bg-transparent px-4 py-2.5 text-sm font-bold text-neutral-300"
-                defaultValue=""
-                onChange={(e) => {
-                  if (e.target.value) window.open(e.target.value, '_blank')
-                }}
-              >
-                <option value="" disabled>
-                  Family site
-                </option>
-                {company.familySites.map((f) => (
-                  <option key={f.name} value={f.url} className="text-black">
-                    {f.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+    <footer className="bg-brand dark:bg-brand-dark transition-colors">
+      {/* 상단 링크 영역 */}
+      <div className="max-w-container mx-auto section-x py-12 border-b border-white/10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {/* 로고 + 소개 */}
+          <div className="col-span-2 md:col-span-1">
+            <Link to="/" className="flex items-center gap-2 mb-4">
+              <span className="text-2xl">🎓</span>
+              <div>
+                <p className="text-lg font-extrabold text-white">{site.name}</p>
+                <p className="text-xs text-white/50">{site.nameKo}</p>
+              </div>
+            </Link>
+            <p className="text-sm text-white/60 leading-relaxed max-w-xs">
+              {site.description}
+            </p>
           </div>
 
-          {/* 정책 링크 + 카피라이트 */}
-          <div className="flex flex-col justify-between gap-4 border-t border-neutral-800 pt-4 text-sm md:flex-row md:items-center">
-            <ul className="flex">
-              {company.footerLinks.map((l) => (
-                <li key={l.label}>
+          {/* 주제별 */}
+          <div>
+            <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">주제별</p>
+            <ul className="space-y-2">
+              {Object.entries(categories).map(([key, cat]) => (
+                <li key={key}>
                   <Link
-                    to={l.to}
-                    className={[
-                      'px-6 first:pl-0',
-                      l.strong
-                        ? 'font-black text-white'
-                        : 'font-medium text-neutral-400 hover:text-white',
-                    ].join(' ')}
+                    to={`/contents/${key}`}
+                    className="text-sm text-white/70 hover:text-white transition flex items-center gap-1.5"
                   >
-                    {l.label}
+                    <span className="text-base">{cat.emoji}</span>
+                    {cat.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <p className="text-zinc-500">{company.copyright}</p>
           </div>
+
+          {/* 유형별 */}
+          <div>
+            <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">유형별</p>
+            <ul className="space-y-2">
+              {Object.entries(types).map(([key, t]) => (
+                <li key={key}>
+                  <Link
+                    to={`/types/${key}`}
+                    className="text-sm text-white/70 hover:text-white transition flex items-center gap-1.5"
+                  >
+                    <span className="text-base">{t.emoji}</span>
+                    {t.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 소개 */}
+          <div>
+            <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">안내</p>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/about" className="text-sm text-white/70 hover:text-white transition">
+                  사이트 소개
+                </Link>
+              </li>
+              <li>
+                <Link to="/guide" className="text-sm text-white/70 hover:text-white transition">
+                  이용안내
+                </Link>
+              </li>
+              {site.contact.youtube !== '#' && (
+                <li>
+                  <a
+                    href={site.contact.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-white/70 hover:text-white transition flex items-center gap-1.5"
+                  >
+                    ▶ 유튜브 채널
+                  </a>
+                </li>
+              )}
+              {site.contact.instagram !== '#' && (
+                <li>
+                  <a
+                    href={site.contact.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-white/70 hover:text-white transition flex items-center gap-1.5"
+                  >
+                    📷 인스타그램
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* 하단 카피라이트 */}
+      <div className="max-w-container mx-auto section-x py-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <ul className="flex gap-4 flex-wrap justify-center">
+            {site.footerLinks.map((l) => (
+              <li key={l.label}>
+                <Link
+                  to={l.to}
+                  className={[
+                    'text-xs transition',
+                    l.strong
+                      ? 'font-bold text-white/80 hover:text-white'
+                      : 'text-white/40 hover:text-white/70',
+                  ].join(' ')}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-white/30">{site.copyright}</p>
         </div>
       </div>
     </footer>

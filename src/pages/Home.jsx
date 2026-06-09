@@ -1,12 +1,27 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Placeholder from '../components/Placeholder'
-import { businessCards, notices } from '../data/site'
+import { contents, categories, types } from '../data/site'
+import ContentCard from '../components/ContentCard'
 
-// 히어로 슬라이드 데이터
 const slides = [
-  { label: 'HERO 01', copy: 'Always by your side' },
-  { label: 'HERO 02', copy: 'Enable Today,\nEmpower Tomorrow' },
+  {
+    emoji: '🌟',
+    title: '영어가 재밌어지는 곳',
+    sub: '아이들을 위한 무료 & 유료 영어교육 콘텐츠를 한눈에!',
+    cta: { label: '무료 콘텐츠 보기', to: '/types/free' },
+  },
+  {
+    emoji: '📚',
+    title: '주제별로 골라보는 영어 학습',
+    sub: '스피킹, 리스닝, 리딩, 라이팅… 우리 아이에게 딱 맞는 콘텐츠를 찾아보세요.',
+    cta: { label: '전체 콘텐츠 보기', to: '/contents/all' },
+  },
+  {
+    emoji: '🎧',
+    title: '영상·워크시트·앱·책 모두 있어요',
+    sub: '다양한 형태의 영어 학습 자료를 유형별로 확인하세요.',
+    cta: { label: '유형별 보기', to: '/types/video' },
+  },
 ]
 
 function Hero() {
@@ -17,200 +32,179 @@ function Hero() {
     return () => clearInterval(t)
   }, [])
 
-  const go = (dir) =>
-    setIdx((i) => (i + dir + slides.length) % slides.length)
+  const slide = slides[idx]
 
   return (
-    <section className="relative h-[calc(100vh-5rem)] min-h-[520px] w-full overflow-hidden bg-neutral-800">
-      {slides.map((s, i) => (
-        <div
-          key={i}
-          className={[
-            'absolute inset-0 transition-opacity duration-1000',
-            i === idx ? 'opacity-100' : 'pointer-events-none opacity-0',
-          ].join(' ')}
-        >
-          <Placeholder label={s.label} ratio="auto" className="h-full" dark />
-          {/* 카피 */}
-          <div className="absolute inset-0 flex items-end">
-            <p className="whitespace-pre-line px-[5%] pb-32 text-5xl font-medium leading-tight text-white drop-shadow md:text-7xl lg:text-8xl xl:text-[8rem]">
-              {s.copy}
+    <section className="relative overflow-hidden bg-brand dark:bg-brand-dark min-h-[400px] md:min-h-[480px] flex items-center">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-palette-blue/20 blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-palette-mint/20 blur-3xl" />
+        <div className="absolute top-1/2 left-1/3 w-64 h-64 rounded-full bg-palette-yellow/10 blur-2xl" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-container mx-auto section-x py-16 md:py-24 flex flex-col md:flex-row items-center gap-10">
+        <div className="flex-1 text-white">
+          <div className="text-6xl md:text-8xl mb-6">{slide.emoji}</div>
+          <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4">
+            {slide.title}
+          </h1>
+          <p className="text-base md:text-lg text-white/80 mb-8 max-w-md">
+            {slide.sub}
+          </p>
+          <Link
+            to={slide.cta.to}
+            className="inline-flex items-center gap-2 bg-white text-brand font-bold px-6 py-3 rounded-full hover:bg-palette-yellow transition shadow-lg text-sm md:text-base"
+          >
+            {slide.cta.label} →
+          </Link>
+        </div>
+
+        <div className="flex md:flex-col gap-2.5">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`슬라이드 ${i + 1}`}
+              onClick={() => setIdx(i)}
+              className={[
+                'rounded-full transition-all duration-300 bg-white',
+                i === idx
+                  ? 'md:h-10 md:w-2.5 h-2.5 w-10 opacity-100'
+                  : 'md:h-4 md:w-2.5 h-2.5 w-4 opacity-40',
+              ].join(' ')}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CategoryLinks() {
+  const cats = Object.entries(categories).filter(([k]) => k !== 'all')
+  const colorBg = {
+    peach: 'bg-palette-peach hover:bg-palette-hover-peach',
+    yellow: 'bg-palette-yellow hover:bg-palette-hover-yellow',
+    mint: 'bg-palette-mint hover:bg-palette-hover-mint',
+    blue: 'bg-palette-blue hover:bg-palette-hover-blue',
+  }
+
+  return (
+    <section className="max-w-container mx-auto section-x py-14 md:py-20">
+      <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-2">
+        주제별로 찾아보세요
+      </h2>
+      <p className="text-neutral-500 dark:text-neutral-400 mb-8 text-sm md:text-base">
+        스피킹부터 문법까지, 원하는 영어 학습 주제를 선택하세요.
+      </p>
+      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        {cats.map(([key, cat]) => (
+          <Link
+            key={key}
+            to={`/contents/${key}`}
+            className={[
+              'flex flex-col items-center gap-2 p-4 rounded-2xl transition font-semibold text-neutral-800 shadow-sm',
+              colorBg[cat.color] || 'bg-palette-blue hover:bg-palette-hover-blue',
+            ].join(' ')}
+          >
+            <span className="text-3xl">{cat.emoji}</span>
+            <span className="text-xs md:text-sm text-center leading-tight">{cat.label}</span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function FeaturedContents() {
+  const featured = contents.filter((c) => c.featured).slice(0, 6)
+
+  return (
+    <section className="bg-surface-2 dark:bg-surface-2dark py-14 md:py-20 transition-colors">
+      <div className="max-w-container mx-auto section-x">
+        <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-1">
+              추천 콘텐츠
+            </h2>
+            <p className="text-neutral-500 dark:text-neutral-400 text-sm">
+              엄선한 영어 교육 자료를 먼저 만나보세요.
             </p>
           </div>
-        </div>
-      ))}
-
-      {/* 좌우 네비 */}
-      <button
-        type="button"
-        aria-label="이전 슬라이드"
-        onClick={() => go(-1)}
-        className="absolute bottom-10 left-[5%] z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/60 text-white transition hover:bg-white/20"
-      >
-        ‹
-      </button>
-      <button
-        type="button"
-        aria-label="다음 슬라이드"
-        onClick={() => go(1)}
-        className="absolute bottom-10 left-[calc(5%+52px)] z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/60 text-white transition hover:bg-white/20"
-      >
-        ›
-      </button>
-
-      {/* 바로가기 버튼 */}
-      <div className="absolute bottom-10 right-[5%] z-10 hidden gap-3 md:flex">
-        <a
-          href="#"
-          className="flex items-center gap-3 rounded-full bg-brand px-6 py-3.5 text-white transition hover:brightness-125"
-        >
-          전자조달 시스템 <span>→</span>
-        </a>
-        <a
-          href="#"
-          className="flex items-center gap-3 rounded-full bg-stone-500 px-6 py-3.5 text-white transition hover:brightness-110"
-        >
-          해링턴 플레이스 <span>→</span>
-        </a>
-      </div>
-
-      {/* 인디케이터 */}
-      <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            aria-label={`슬라이드 ${i + 1}`}
-            onClick={() => setIdx(i)}
-            className={[
-              'h-1.5 rounded-full transition-all',
-              i === idx ? 'w-8 bg-white' : 'w-2 bg-white/50',
-            ].join(' ')}
-          />
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function IntroLinks() {
-  const links = [
-    { label: 'CEO 인사말', to: '/about/greetings' },
-    { label: '비전/가치', to: '/about/vision' },
-    { label: '연혁', to: '/about/history' },
-    { label: '브랜드소개', to: '/about/brand' },
-  ]
-  return (
-    <section className="py-24 text-center md:py-32">
-      <p className="mx-auto mb-12 max-w-2xl px-6 text-2xl font-bold leading-snug text-neutral-800 md:text-3xl">
-        사람과 환경을 잇는 건설,
-        <br className="hidden md:block" /> 신뢰로 미래를 짓습니다.
-      </p>
-      <ul className="flex flex-wrap justify-center gap-4 px-4">
-        {links.map((l) => (
-          <li key={l.to}>
-            <Link
-              to={l.to}
-              className="relative inline-flex items-center gap-3 rounded-full bg-neutral-100 py-4 pl-6 pr-12 font-bold transition hover:bg-neutral-200"
-            >
-              {l.label}
-              <span className="absolute right-5 text-neutral-500">→</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
-}
-
-function OurBusiness() {
-  return (
-    <section className="py-24 md:py-32">
-      <div className="mx-auto max-w-container px-4 md:px-10 lg:px-40">
-        <h2 className="mb-12 text-4xl font-bold leading-tight text-brand md:text-6xl">
-          Our Business
-          <br />
-          Shaping the Future
-        </h2>
-      </div>
-
-      {/* 가로 스크롤 카드 */}
-      <div className="flex gap-6 overflow-x-auto px-4 pb-4 md:px-10 lg:px-40">
-        {businessCards.map((b) => (
           <Link
-            key={b.key}
-            to={b.to}
-            className="group relative h-[366px] w-64 shrink-0 overflow-hidden rounded-xl"
+            to="/contents/all"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand dark:text-brand-light hover:underline"
           >
-            <Placeholder label={b.title} ratio="auto" className="h-full" dark />
-            {/* 그라데이션 오버레이 */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
-              <p className="mb-4 text-2xl font-bold">{b.title}</p>
-              <p className="text-sm leading-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                {b.desc}
-              </p>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function SustainabilityBand() {
-  return (
-    <section className="relative h-[480px] w-full overflow-hidden md:h-[600px]">
-      <Placeholder label="SUSTAINABILITY BG" ratio="auto" className="h-full" dark />
-      <div className="absolute inset-0 flex flex-col justify-center bg-black/30 px-4 md:px-10 lg:px-40">
-        <p className="mb-4 text-sm font-semibold tracking-widest text-white/80">
-          SUSTAINABILITY
-        </p>
-        <h2 className="mb-8 text-4xl font-bold leading-tight text-white md:text-6xl">
-          지속 가능한 내일을
-          <br />
-          함께 만들어갑니다
-        </h2>
-        <div>
-          <Link
-            to="/sustainability/ethical"
-            className="inline-flex items-center gap-3 rounded-full bg-white/90 px-6 py-3.5 font-bold text-brand transition hover:bg-white"
-          >
-            자세히 보기 <span>→</span>
+            전체 콘텐츠 보기 →
           </Link>
         </div>
-      </div>
-    </section>
-  )
-}
-
-function MoreToDiscover() {
-  return (
-    <section className="py-24 md:py-32">
-      <div className="mx-auto flex max-w-container flex-col px-4 md:px-10 lg:px-40">
-        <div className="mb-12 flex flex-col items-start justify-between gap-6 border-b-2 border-neutral-400 pb-10 md:flex-row md:items-center">
-          <p className="text-4xl font-bold text-brand md:text-6xl">More to Discover</p>
-          <Link
-            to="/support"
-            className="relative inline-flex items-center gap-3 rounded-full bg-neutral-100 py-4 pl-6 pr-12 font-bold transition hover:bg-neutral-200"
-          >
-            전체보기 <span className="absolute right-5 text-neutral-500">→</span>
-          </Link>
-        </div>
-
-        <ul className="flex flex-col divide-y divide-neutral-200">
-          {notices.map((n) => (
-            <li key={n.id}>
-              <Link
-                to="/support"
-                className="flex flex-col justify-between gap-1 py-5 transition hover:text-brand md:flex-row md:items-center"
-              >
-                <span className="text-lg font-semibold md:text-xl">{n.title}</span>
-                <span className="text-sm text-neutral-500 md:text-base">{n.date}</span>
-              </Link>
-            </li>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {featured.map((item) => (
+            <ContentCard key={item.id} item={item} />
           ))}
-        </ul>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function StatsBar() {
+  const stats = [
+    { label: '전체 콘텐츠', value: `${contents.length}개` },
+    { label: '무료 콘텐츠', value: `${contents.filter((c) => c.types.includes('free')).length}개` },
+    { label: '학습 주제', value: '6가지' },
+    { label: '콘텐츠 유형', value: '6가지' },
+  ]
+
+  return (
+    <section className="bg-brand dark:bg-brand-dark py-10 transition-colors">
+      <div className="max-w-container mx-auto section-x">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {stats.map((s) => (
+            <div key={s.label} className="text-center">
+              <p className="text-3xl md:text-4xl font-extrabold text-palette-yellow">{s.value}</p>
+              <p className="text-sm text-white/70 mt-1">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function TypeLinks() {
+  const typeList = Object.entries(types)
+  const typeCls = {
+    free: 'bg-palette-mint text-emerald-800 hover:bg-palette-hover-mint',
+    paid: 'bg-palette-peach text-orange-800 hover:bg-palette-hover-peach',
+    video: 'bg-palette-yellow text-amber-800 hover:bg-palette-hover-yellow',
+    worksheet: 'bg-palette-blue text-blue-800 hover:bg-palette-hover-blue',
+    app: 'bg-purple-100 text-purple-800 hover:bg-purple-200',
+    book: 'bg-rose-100 text-rose-800 hover:bg-rose-200',
+  }
+
+  return (
+    <section className="max-w-container mx-auto section-x py-14 md:py-20">
+      <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-2">
+        유형별로 찾아보세요
+      </h2>
+      <p className="text-neutral-500 dark:text-neutral-400 mb-8 text-sm md:text-base">
+        무료, 영상, 워크시트, 앱, 책 등 다양한 형태로 제공됩니다.
+      </p>
+      <div className="flex flex-wrap gap-3">
+        {typeList.map(([key, t]) => (
+          <Link
+            key={key}
+            to={`/types/${key}`}
+            className={[
+              'flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm transition shadow-sm',
+              typeCls[key] || 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200',
+            ].join(' ')}
+          >
+            <span className="text-base">{t.emoji}</span>
+            {t.label}
+          </Link>
+        ))}
       </div>
     </section>
   )
@@ -220,10 +214,10 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <IntroLinks />
-      <OurBusiness />
-      <SustainabilityBand />
-      <MoreToDiscover />
+      <CategoryLinks />
+      <FeaturedContents />
+      <StatsBar />
+      <TypeLinks />
     </>
   )
 }

@@ -7,37 +7,65 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply font-sans text-neutral-900 antialiased;
+    @apply font-sans antialiased bg-bg dark:bg-bg-dark text-neutral-800 dark:text-neutral-100;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
 @layer components {
-  /* 우측 화살표가 붙은 둥근 버튼 (소스의 btn-arrow 스타일) */
-  .btn-pill {
-    @apply inline-flex items-center gap-3 rounded-full bg-neutral-100 py-4 pl-6 pr-12 font-bold transition hover:bg-neutral-200;
+  .card {
+    @apply bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-neutral-100 dark:border-neutral-700 transition-all duration-200;
   }
-  .btn-pill::after {
-    content: '→';
-    @apply absolute right-5 text-neutral-500;
+  .card:hover {
+    @apply shadow-lg -translate-y-1;
   }
 
-  /* 섹션 공통 좌우 여백 */
+  .badge {
+    @apply inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  .badge-free {
+    @apply bg-palette-mint text-emerald-800;
+  }
+  .badge-paid {
+    @apply bg-palette-peach text-orange-800;
+  }
+  .badge-video {
+    @apply bg-palette-yellow text-amber-800;
+  }
+  .badge-worksheet {
+    @apply bg-palette-blue text-blue-800;
+  }
+  .badge-app {
+    @apply bg-purple-100 text-purple-800;
+  }
+  .badge-book {
+    @apply bg-rose-100 text-rose-800;
+  }
+
   .section-x {
-    @apply px-4 md:px-10 lg:px-24 xl:px-40;
+    @apply px-4 sm:px-6 md:px-10 lg:px-20 xl:px-24;
+  }
+  .section-py {
+    @apply py-16 md:py-24;
   }
 }
 
-/* 히어로 슬라이더 페이드 */
-@keyframes heroFade {
-  0%,
-  45% {
-    opacity: 1;
-  }
-  50%,
-  95% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #AFC8E6;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #3A4D6D;
+}
+
+::selection {
+  background-color: #AFC8E6;
+  color: #1A2235;
 }

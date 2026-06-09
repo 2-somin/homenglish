@@ -1,9 +1,9 @@
 {
-  "name": "rest03",
+  "name": "kidenglish",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
-  "description": "회사 사이트 템플릿 (건설사) - React + Vite + Tailwind",
+  "description": "아이들 무료·유료 영어교육 콘텐츠 사이트 — React + Vite + Tailwind",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

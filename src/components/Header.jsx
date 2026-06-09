@@ -33,16 +33,12 @@ export default function Header() {
       >
         <div className="mx-auto flex h-16 max-w-container items-center justify-between px-4 md:px-10 lg:px-20">
           {/* 로고 */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <span className="text-2xl">🎓</span>
-            <div className="flex flex-col leading-none">
-              <span className="text-xl font-extrabold tracking-tight text-brand dark:text-brand-light">
-                {site.name}
-              </span>
-              <span className="text-[10px] font-medium text-neutral-400 dark:text-neutral-500 tracking-widest">
-                {site.nameKo}
-              </span>
-            </div>
+          <Link to="/" className="flex items-center shrink-0">
+            <img
+              src="/rest04/homeglish_logo_kr.png"
+              alt={`${site.nameKo} ${site.name}`}
+              className="h-10 w-auto object-contain"
+            />
           </Link>
 
           {/* 데스크탑 메뉴 */}
@@ -136,13 +132,14 @@ export default function Header() {
             <div className="mb-6 flex items-center justify-between">
               <Link
                 to="/"
-                className="flex items-center gap-2"
+                className="flex items-center"
                 onClick={() => setMobileOpen(false)}
               >
-                <span className="text-xl">🎓</span>
-                <span className="text-lg font-extrabold text-brand dark:text-brand-light">
-                  {site.name}
-                </span>
+                <img
+                  src="/rest04/homeglish_logo_kr.png"
+                  alt={`${site.nameKo} ${site.name}`}
+                  className="h-8 w-auto object-contain"
+                />
               </Link>
               <button
                 type="button"

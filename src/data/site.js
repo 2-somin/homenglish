@@ -1,13 +1,13 @@
 // ============================================================
-// KidEnglish — 아이들 영어교육 콘텐츠 사이트 전역 데이터
+// Homenglish — 아이들 영어교육 콘텐츠 사이트 전역 데이터
 // ============================================================
 
 export const site = {
-  name: 'KidEnglish',
-  nameKo: '키즈잉글리시',
+  name: 'homenglish',
+  nameKo: '홈글리시',
   tagline: '우리 아이 영어의 첫걸음',
   description: '아이들을 위한 무료·유료 영어교육 콘텐츠를 한눈에 모아보세요.',
-  copyright: '© 2026 KidEnglish. All rights reserved.',
+  copyright: '© 2026 homenglish. All rights reserved.',
   contact: {
     email: 'hello@kidenglish.kr',
     instagram: '#',

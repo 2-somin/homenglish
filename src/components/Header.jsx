@@ -90,31 +90,34 @@ export default function Header() {
           </div>
         </div>
 
-        {/* 데스크탑 드롭다운 */}
+        {/* 데스크탑 드롭다운 — 서브메뉴 가로 나열 */}
         <div
           className={[
             'hidden lg:block overflow-hidden border-b transition-all duration-200',
             'bg-bg dark:bg-bg-dark border-neutral-100 dark:border-neutral-700',
-            hovered ? 'max-h-56 opacity-100' : 'max-h-0 border-b-0 opacity-0',
+            hovered ? 'max-h-24 opacity-100' : 'max-h-0 border-b-0 opacity-0',
           ].join(' ')}
         >
-          <div className="mx-auto flex max-w-container px-20">
+          <div className="mx-auto max-w-container px-20">
             {nav.map((item) => (
               <div
                 key={item.label}
-                className="w-52 py-4"
+                className="py-4"
                 onMouseEnter={() => setHovered(item.label)}
               >
-                {hovered === item.label &&
-                  item.children.map((c) => (
-                    <Link
-                      key={c.label + c.to}
-                      to={c.to}
-                      className="block px-4 py-1.5 text-sm text-neutral-600 dark:text-neutral-400 transition hover:text-brand dark:hover:text-brand-light hover:font-semibold"
-                    >
-                      {c.label}
-                    </Link>
-                  ))}
+                {hovered === item.label && (
+                  <div className="flex flex-wrap gap-1">
+                    {item.children.map((c) => (
+                      <Link
+                        key={c.label + c.to}
+                        to={c.to}
+                        className="px-4 py-1.5 text-sm text-neutral-600 dark:text-neutral-400 rounded-full transition hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:text-brand dark:hover:text-brand-light font-medium whitespace-nowrap"
+                      >
+                        {c.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>

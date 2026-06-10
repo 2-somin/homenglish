@@ -3,12 +3,15 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 
+const BOARD_LABELS = { free: '자유게시판', qna: 'Q&A 게시판' }
+
 export default function BoardWrite() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { user, loading: authLoading } = useAuth()
 
   const editId = searchParams.get('edit')
+  const boardType = searchParams.get('type') || 'free'
   const isEditMode = Boolean(editId)
 
   const [title, setTitle] = useState('')
@@ -17,12 +20,18 @@ export default function BoardWrite() {
   const [loadingPost, setLoadingPost] = useState(isEditMode)
   const [error, setError] = useState('')
 
+  const boardLabel = BOARD_LABELS[boardType] || BOARD_LABELS.free
+  const boardPath = `/board/${boardType}`
+
   // 비로그인 시 리다이렉트
   useEffect(() => {
     if (!authLoading && !user) {
-      navigate('/login', { replace: true, state: { from: isEditMode ? `/board/write?edit=${editId}` : '/board/write' } })
+      navigate('/login', {
+        replace: true,
+        state: { from: isEditMode ? `/board/write?edit=${editId}&type=${boardType}` : `/board/write?type=${boardType}` },
+      })
     }
-  }, [user, authLoading, navigate, isEditMode, editId])
+  }, [user, authLoading, navigate, isEditMode, editId, boardType])
 
   // 수정 모드: 기존 내용 로드
   useEffect(() => {
@@ -39,7 +48,6 @@ export default function BoardWrite() {
         if (error) throw error
         if (!data) throw new Error('게시글을 찾을 수 없습니다.')
 
-        // 본인 글인지 확인
         if (user && data.author_id !== user.id) {
           alert('수정 권한이 없습니다.')
           navigate(`/board/${editId}`, { replace: true })
@@ -57,6 +65,16 @@ export default function BoardWrite() {
 
     if (user) fetchPost()
   }, [isEditMode, editId, user, navigate])
+
+  const getAuthorName = () => {
+    if (!user) return ''
+    return (
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      user.email?.split('@')[0] ||
+      '사용자'
+    )
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -82,7 +100,9 @@ export default function BoardWrite() {
             title: title.trim(),
             content: content.trim(),
             author_id: user.id,
-            author_email: user.email,
+            author_email: user.email || '',
+            author_name: getAuthorName(),
+            board_type: boardType,
           })
           .select()
           .single()
@@ -101,11 +121,10 @@ export default function BoardWrite() {
     if (isEditMode) {
       navigate(`/board/${editId}`)
     } else {
-      navigate('/board')
+      navigate(boardPath)
     }
   }
 
-  // 인증 로딩 중
   if (authLoading) {
     return (
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-bg dark:bg-bg-dark">
@@ -114,10 +133,8 @@ export default function BoardWrite() {
     )
   }
 
-  // 비로그인 (useEffect에서 navigate 처리, 잠깐 보일 수 있음)
   if (!user) return null
 
-  // 수정 모드 로딩 중
   if (loadingPost) {
     return (
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-bg dark:bg-bg-dark">
@@ -131,6 +148,7 @@ export default function BoardWrite() {
       <div className="mx-auto max-w-3xl">
         {/* 헤더 */}
         <div className="mb-6">
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">{boardLabel}</p>
           <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">
             {isEditMode ? '게시글 수정' : '글쓰기'}
           </h1>

@@ -46,8 +46,10 @@ export default function App() {
 
           {/* 게시판 — /board/write가 /board/:id 보다 먼저 와야 함 */}
           <Route path="/board/write" element={<BoardWrite />} />
+          <Route path="/board/free" element={<Board type="free" />} />
+          <Route path="/board/qna" element={<Board type="qna" />} />
           <Route path="/board/:id" element={<BoardDetail />} />
-          <Route path="/board" element={<Board />} />
+          <Route path="/board" element={<Navigate to="/board/free" replace />} />
 
           <Route path="*" element={<OAuthCallback />} />
         </Routes>

@@ -57,9 +57,10 @@ export const nav = [
   },
   {
     label: '커뮤니티',
-    to: '/board',
+    to: '/board/free',
     children: [
-      { label: '자유게시판', to: '/board' },
+      { label: '자유게시판', to: '/board/free' },
+      { label: 'Q&A 게시판', to: '/board/qna' },
     ],
   },
 ]

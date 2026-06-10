@@ -9,7 +9,9 @@ create table if not exists posts (
   title text not null,
   content text not null,
   author_id uuid references auth.users(id) on delete cascade not null,
-  author_email text not null,
+  author_email text,
+  author_name text,
+  board_type text not null default 'free',
   views integer default 0,
   created_at timestamptz default now()
 );
@@ -36,3 +38,9 @@ create policy "update_own"
 create policy "delete_own"
   on posts for delete
   using (auth.uid() = author_id);
+
+-- ============================================================
+-- 기존 posts 테이블에 컬럼 추가 (이미 테이블이 있는 경우)
+-- ============================================================
+-- alter table posts add column if not exists board_type text not null default 'free';
+-- alter table posts add column if not exists author_name text;

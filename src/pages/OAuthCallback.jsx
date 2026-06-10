@@ -11,27 +11,34 @@ export default function OAuthCallback() {
   useEffect(() => {
     if (!isOAuth) return
 
-    // 1. 이미 세션이 있으면 바로 이동
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) { goHome(); return }
-
-      // 2. hash에서 토큰 직접 파싱해서 setSession 시도
-      const params = new URLSearchParams(window.location.hash.substring(1))
-      const access_token = params.get('access_token')
-      const refresh_token = params.get('refresh_token') || ''
-
-      if (access_token) {
-        supabase.auth.setSession({ access_token, refresh_token })
-          .then(() => goHome())
-          .catch(() => goHome()) // 실패해도 홈으로
-      } else {
+    // Supabase detectSessionInUrl(true, default) automatically processes
+    // the access_token in the URL hash during client init.
+    // Wait for onAuthStateChange SIGNED_IN event instead of calling setSession.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        subscription.unsubscribe()
         goHome()
       }
     })
 
-    // 3. 3초 후에도 안 넘어가면 강제 이동
-    const timer = setTimeout(goHome, 3000)
-    return () => clearTimeout(timer)
+    // Also check if session already exists (race condition: client processed hash before we subscribed)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        subscription.unsubscribe()
+        goHome()
+      }
+    })
+
+    // Fallback: 5초 후 강제 이동
+    const timer = setTimeout(() => {
+      subscription.unsubscribe()
+      goHome()
+    }, 5000)
+
+    return () => {
+      clearTimeout(timer)
+      subscription.unsubscribe()
+    }
   }, [])
 
   if (!isOAuth) return <SimplePage title="페이지를 찾을 수 없습니다" />

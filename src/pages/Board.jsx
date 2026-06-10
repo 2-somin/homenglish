@@ -5,7 +5,18 @@ import { useAuth } from '../contexts/AuthContext'
 
 const PAGE_SIZE = 10
 
-export default function Board() {
+const BOARD_META = {
+  free: {
+    title: '자유게시판',
+    desc: '홈글리시 회원들과 자유롭게 이야기를 나눠보세요',
+  },
+  qna: {
+    title: 'Q&A 게시판',
+    desc: '영어 홈스쿨 관련 궁금한 점을 질문하고 답변해 보세요',
+  },
+}
+
+export default function Board({ type = 'free' }) {
   const navigate = useNavigate()
   const { user } = useAuth()
 
@@ -15,11 +26,17 @@ export default function Board() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  const meta = BOARD_META[type] || BOARD_META.free
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
+
+  // 탭 전환 시 페이지 리셋
+  useEffect(() => {
+    setPage(1)
+  }, [type])
 
   useEffect(() => {
     fetchPosts()
-  }, [page])
+  }, [page, type])
 
   const fetchPosts = async () => {
     setLoading(true)
@@ -31,6 +48,7 @@ export default function Board() {
       const { data, error, count } = await supabase
         .from('posts')
         .select('*', { count: 'exact' })
+        .eq('board_type', type)
         .order('created_at', { ascending: false })
         .range(from, to)
 
@@ -57,29 +75,61 @@ export default function Board() {
     return d.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
   }
 
-  const getAuthorDisplay = (email) => {
-    if (!email) return '익명'
-    return email.split('@')[0]
+  const getAuthorDisplay = (post) => {
+    if (post.author_name) return post.author_name
+    if (post.author_email) return post.author_email.split('@')[0]
+    return '익명'
   }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-bg dark:bg-bg-dark py-10 px-4">
       <div className="mx-auto max-w-4xl">
+        {/* 탭 */}
+        <div className="flex gap-1 mb-6 border-b border-neutral-200 dark:border-neutral-700">
+          <Link
+            to="/board/free"
+            className={[
+              'px-5 py-3 text-sm font-semibold border-b-2 transition',
+              type === 'free'
+                ? 'border-brand text-brand dark:text-brand-light dark:border-brand-light'
+                : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200',
+            ].join(' ')}
+          >
+            자유게시판
+          </Link>
+          <Link
+            to="/board/qna"
+            className={[
+              'px-5 py-3 text-sm font-semibold border-b-2 transition',
+              type === 'qna'
+                ? 'border-brand text-brand dark:text-brand-light dark:border-brand-light'
+                : 'border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200',
+            ].join(' ')}
+          >
+            Q&A 게시판
+          </Link>
+        </div>
+
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">자유게시판</h1>
-            <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-              홈글리시 회원들과 자유롭게 이야기를 나눠보세요
-            </p>
+            <h1 className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">{meta.title}</h1>
+            <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{meta.desc}</p>
           </div>
-          {user && (
+          {user ? (
             <button
-              onClick={() => navigate('/board/write')}
+              onClick={() => navigate(`/board/write?type=${type}`)}
               className="px-5 py-2.5 rounded-xl bg-brand hover:bg-brand-dark text-white text-sm font-semibold transition"
             >
               글쓰기
             </button>
+          ) : (
+            <Link
+              to="/login"
+              className="px-5 py-2.5 rounded-xl border border-brand text-brand dark:border-brand-light dark:text-brand-light text-sm font-semibold hover:bg-brand/5 dark:hover:bg-brand-light/10 transition"
+            >
+              로그인 후 글쓰기
+            </Link>
           )}
         </div>
 
@@ -113,7 +163,7 @@ export default function Board() {
               <p className="text-neutral-400 dark:text-neutral-500 text-sm">아직 게시글이 없습니다.</p>
               {user && (
                 <button
-                  onClick={() => navigate('/board/write')}
+                  onClick={() => navigate(`/board/write?type=${type}`)}
                   className="mt-4 px-5 py-2 rounded-xl bg-brand hover:bg-brand-dark text-white text-sm font-semibold transition"
                 >
                   첫 글을 작성해보세요
@@ -143,7 +193,7 @@ export default function Board() {
               {/* 모바일: 작성자·날짜·조회 한 줄 */}
               <div className="flex items-center gap-3 sm:contents text-xs text-neutral-400 dark:text-neutral-500">
                 <span className="sm:text-center sm:w-24 truncate">
-                  {getAuthorDisplay(post.author_email)}
+                  {getAuthorDisplay(post)}
                 </span>
                 <span className="sm:text-center sm:w-28 whitespace-nowrap">
                   {formatDate(post.created_at)}

@@ -32,6 +32,7 @@ export default function BoardDetail() {
 
       setPost(data)
 
+
       // 조회수 증가
       await supabase
         .from('posts')
@@ -55,7 +56,7 @@ export default function BoardDetail() {
         .eq('id', id)
 
       if (error) throw error
-      navigate('/board', { replace: true })
+      navigate(post?.board_type ? `/board/${post.board_type}` : '/board/free', { replace: true })
     } catch (err) {
       alert('삭제에 실패했습니다: ' + (err.message || ''))
       setDeleting(false)
@@ -74,11 +75,13 @@ export default function BoardDetail() {
     })
   }
 
-  const getAuthorDisplay = (email) => {
-    if (!email) return '익명'
-    return email.split('@')[0]
+  const getAuthorDisplay = (post) => {
+    if (post.author_name) return post.author_name
+    if (post.author_email) return post.author_email.split('@')[0]
+    return '익명'
   }
 
+  const boardPath = `/board/${post?.board_type || 'free'}`
   const isOwner = user && post && user.id === post.author_id
 
   // 로딩
@@ -96,7 +99,7 @@ export default function BoardDetail() {
       <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-4 bg-bg dark:bg-bg-dark px-4">
         <p className="text-red-500 text-sm">{error}</p>
         <button
-          onClick={() => navigate('/board')}
+          onClick={() => navigate('/board/free')}
           className="px-5 py-2.5 rounded-xl bg-brand text-white text-sm font-semibold hover:bg-brand-dark transition"
         >
           목록으로
@@ -110,7 +113,7 @@ export default function BoardDetail() {
       <div className="mx-auto max-w-3xl">
         {/* 목록으로 */}
         <button
-          onClick={() => navigate('/board')}
+          onClick={() => navigate(boardPath)}
           className="mb-6 flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-brand dark:hover:text-brand-light transition"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -132,7 +135,7 @@ export default function BoardDetail() {
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
-                {getAuthorDisplay(post.author_email)}
+                {getAuthorDisplay(post)}
               </span>
               <span className="flex items-center gap-1.5">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -164,7 +167,7 @@ export default function BoardDetail() {
           {isOwner && (
             <div className="px-8 py-5 border-t border-neutral-100 dark:border-neutral-700 flex items-center justify-end gap-3">
               <button
-                onClick={() => navigate(`/board/write?edit=${post.id}`)}
+                onClick={() => navigate(`/board/write?edit=${post.id}&type=${post.board_type || 'free'}`)}
                 className="px-4 py-2 rounded-xl border border-brand dark:border-brand-light text-brand dark:text-brand-light text-sm font-semibold hover:bg-brand/5 dark:hover:bg-brand-light/10 transition"
               >
                 수정

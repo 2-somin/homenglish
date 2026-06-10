@@ -22,9 +22,7 @@ export default function ContentCard({ item }) {
             onError={(e) => { e.currentTarget.style.display = 'none' }}
           />
         ) : (
-          <div className={`w-full h-full flex items-center justify-center text-5xl transition-transform duration-300 group-hover:scale-105 ${
-            { reading: 'bg-palette-mint', grammar: 'bg-palette-yellow', vocabulary: 'bg-palette-peach', listening: 'bg-palette-blue', phonics: 'bg-palette-mint', app: 'bg-palette-peach' }[item.category] || 'bg-palette-blue'
-          }`}>
+          <div className="w-full h-full flex items-center justify-center text-5xl transition-transform duration-300 group-hover:scale-105 bg-bg dark:bg-brand/20">
             {cat?.emoji || '📚'}
           </div>
         )}

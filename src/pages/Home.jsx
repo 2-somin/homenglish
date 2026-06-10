@@ -9,17 +9,17 @@ function Hero() {
   return (
     <section className="relative overflow-hidden bg-brand dark:bg-brand-dark min-h-[420px] md:min-h-[500px] flex items-center">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-palette-blue/20 blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-palette-mint/20 blur-3xl" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-white/5 blur-3xl" />
       </div>
 
       <div className="relative z-10 w-full max-w-container mx-auto section-x py-20 md:py-28">
-        <p className="text-palette-yellow text-sm md:text-base font-medium tracking-widest uppercase mb-4">
+        <p className="text-bg/80 text-sm md:text-base font-medium tracking-widest uppercase mb-4">
           엄마표 영어 · 가정학습 커뮤니티
         </p>
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight mb-5">
           가정 영어 학습의 첫 걸음,<br />
-          <span className="text-palette-yellow">홈글리시</span>
+          <span className="text-bg">홈글리시</span>
         </h1>
         <p className="text-white/80 text-base md:text-xl max-w-xl mb-10 leading-relaxed">
           영어 가정학습 선배맘과 후배맘의<br className="hidden md:block" />
@@ -28,7 +28,7 @@ function Hero() {
         <div className="flex flex-wrap gap-3">
           <Link
             to="/contents/all"
-            className="inline-flex items-center gap-2 bg-palette-yellow text-brand font-medium px-6 py-3.5 rounded-full hover:bg-white transition shadow-lg text-sm md:text-base"
+            className="inline-flex items-center gap-2 bg-bg text-brand font-medium px-6 py-3.5 rounded-full hover:bg-white transition shadow-lg text-sm md:text-base"
           >
             콘텐츠 둘러보기 →
           </Link>
@@ -51,25 +51,25 @@ function Intro() {
       emoji: '📚',
       title: '검증된 영어 자료',
       desc: '선배맘들이 직접 써본 교재와 앱을 엄선해 소개합니다.',
-      color: 'bg-palette-mint',
+      color: 'bg-brand/10 dark:bg-brand/30',
     },
     {
       emoji: '👩‍👧',
       title: '선배맘 노하우',
       desc: '엄마표 영어를 성공적으로 실천한 부모들의 실제 후기를 확인하세요.',
-      color: 'bg-palette-yellow',
+      color: 'bg-brand/10 dark:bg-brand/30',
     },
     {
       emoji: '📊',
       title: '레벨별 가이드',
       desc: '아이 수준에 맞는 자료와 학습 순서를 단계별로 안내합니다.',
-      color: 'bg-palette-blue',
+      color: 'bg-brand/10 dark:bg-brand/30',
     },
     {
       emoji: '💰',
       title: '사교육비 절감',
       desc: '10분의 1 프로젝트 — 사교육비 부담 없이 가정에서 영어를 완성합니다.',
-      color: 'bg-palette-peach',
+      color: 'bg-brand/10 dark:bg-brand/30',
     },
   ]
 
@@ -215,7 +215,7 @@ function MissionBand() {
       <div className="max-w-container mx-auto section-x">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <p className="text-palette-yellow text-sm font-medium tracking-widest uppercase mb-4">
+            <p className="text-bg/80 text-sm font-medium tracking-widest uppercase mb-4">
               임팩트닷 커리어 프로젝트 선정
             </p>
             <h2 className="text-2xl md:text-4xl font-semibold text-white leading-snug mb-6">
@@ -235,11 +235,11 @@ function MissionBand() {
               { label: '이런 가정에 잘 맞아요', emoji: '✅', items: ['아이에게 집에서 영어를 가르쳐보고 싶은 부모', '사교육비 부담을 줄이고 싶은 가정', '뭐부터 해야 할지 몰라 헤매는 부모', '아이 수준에 맞는 자료를 찾고 싶은 가정'] }
             ].map((section) => (
               <div key={section.label} className="col-span-2 bg-white/10 rounded-2xl p-6">
-                <p className="text-palette-yellow font-medium text-sm mb-4">{section.emoji} {section.label}</p>
+                <p className="text-bg/90 font-medium text-sm mb-4">{section.emoji} {section.label}</p>
                 <ul className="space-y-2">
                   {section.items.map((item) => (
                     <li key={item} className="flex items-start gap-2 text-white/80 text-sm">
-                      <span className="text-palette-mint mt-0.5 shrink-0">→</span>
+                      <span className="text-bg/70 mt-0.5 shrink-0">→</span>
                       {item}
                     </li>
                   ))}

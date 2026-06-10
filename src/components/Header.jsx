@@ -33,7 +33,9 @@ export default function Header() {
     navigate('/')
   }
 
-  const userLabel = user ? user.email.split('@')[0] : null
+  const userLabel = user
+    ? (user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || '사용자')
+    : null
 
   return (
     <header className="sticky top-0 z-50 w-full">

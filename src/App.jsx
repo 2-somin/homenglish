@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -14,16 +13,9 @@ import Login from './pages/Login'
 import Board from './pages/Board'
 import BoardDetail from './pages/BoardDetail'
 import BoardWrite from './pages/BoardWrite'
+import OAuthCallback from './pages/OAuthCallback'
 
 export default function App() {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (window.location.hash.includes('access_token')) {
-      navigate('/', { replace: true })
-    }
-  }, [])
-
   return (
     <div className="min-w-[320px] flex flex-col min-h-screen">
       <ScrollToTop />
@@ -57,7 +49,7 @@ export default function App() {
           <Route path="/board/:id" element={<BoardDetail />} />
           <Route path="/board" element={<Board />} />
 
-          <Route path="*" element={<SimplePage title="페이지를 찾을 수 없습니다" />} />
+          <Route path="*" element={<OAuthCallback />} />
         </Routes>
       </main>
       <Footer />

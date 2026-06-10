@@ -55,6 +55,13 @@ export const nav = [
       { label: '자주 묻는 질문', to: '/about' },
     ],
   },
+  {
+    label: '커뮤니티',
+    to: '/board',
+    children: [
+      { label: '자유게시판', to: '/board' },
+    ],
+  },
 ]
 
 // 콘텐츠 카테고리

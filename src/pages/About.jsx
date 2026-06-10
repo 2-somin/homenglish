@@ -22,8 +22,8 @@ export default function About() {
             <span>›</span>
             <span>홈글리시 소개</span>
           </nav>
-          <p className="text-palette-yellow text-sm font-bold tracking-widest uppercase mb-3">About</p>
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+          <p className="text-palette-yellow text-sm font-medium tracking-widest uppercase mb-3">About</p>
+          <h1 className="text-3xl md:text-5xl font-semibold mb-4 leading-tight">
             홈글리시 소개
           </h1>
           <p className="text-white/80 max-w-2xl text-base md:text-lg leading-relaxed">
@@ -36,7 +36,7 @@ export default function About() {
 
         {/* 서비스 소개 */}
         <div className="max-w-3xl mb-20">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-6">
+          <h2 className="text-2xl md:text-3xl font-semibold text-brand dark:text-brand-light mb-6">
             홈글리시는 어떤 플랫폼인가요?
           </h2>
           <div className="space-y-4 text-neutral-600 dark:text-neutral-300 leading-relaxed text-base md:text-lg">
@@ -54,10 +54,10 @@ export default function About() {
 
         {/* 10분의 1 프로젝트 */}
         <div className="bg-brand dark:bg-brand-dark rounded-3xl p-8 md:p-12 mb-20 transition-colors">
-          <p className="text-palette-yellow text-xs font-bold tracking-widest uppercase mb-3">
+          <p className="text-palette-yellow text-xs font-medium tracking-widest uppercase mb-3">
             임팩트닷 커리어 프로젝트 선정
           </p>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
             10분의 1 프로젝트
           </h2>
           <p className="text-white/80 text-base md:text-lg leading-relaxed mb-6 max-w-2xl">
@@ -81,7 +81,7 @@ export default function About() {
 
         {/* 이런 분들에게 */}
         <div className="mb-20">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-8">
+          <h2 className="text-2xl md:text-3xl font-semibold text-brand dark:text-brand-light mb-8">
             이런 가정에 잘 맞아요
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -103,7 +103,7 @@ export default function About() {
 
         {/* FAQ */}
         <div className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-brand dark:text-brand-light mb-8">
+          <h2 className="text-2xl md:text-3xl font-semibold text-brand dark:text-brand-light mb-8">
             자주 묻는 질문
           </h2>
           <div className="space-y-3 max-w-3xl">
@@ -144,7 +144,7 @@ export default function About() {
         <div className="text-center">
           <Link
             to="/contents/all"
-            className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-bold px-8 py-4 rounded-full hover:opacity-90 transition shadow-lg text-base"
+            className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-medium px-8 py-4 rounded-full hover:opacity-90 transition shadow-lg text-base"
           >
             콘텐츠 둘러보기 →
           </Link>

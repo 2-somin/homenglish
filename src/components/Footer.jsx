@@ -23,7 +23,7 @@ export default function Footer() {
 
           {/* 주제별 */}
           <div>
-            <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">주제별</p>
+            <p className="text-xs font-medium text-white/40 uppercase tracking-widest mb-4">주제별</p>
             <ul className="space-y-2">
               {Object.entries(categories).map(([key, cat]) => (
                 <li key={key}>
@@ -41,7 +41,7 @@ export default function Footer() {
 
           {/* 유형별 */}
           <div>
-            <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">유형별</p>
+            <p className="text-xs font-medium text-white/40 uppercase tracking-widest mb-4">유형별</p>
             <ul className="space-y-2">
               {Object.entries(types).map(([key, t]) => (
                 <li key={key}>
@@ -59,7 +59,7 @@ export default function Footer() {
 
           {/* 소개 */}
           <div>
-            <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">안내</p>
+            <p className="text-xs font-medium text-white/40 uppercase tracking-widest mb-4">안내</p>
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="text-sm text-white/70 hover:text-white transition">
@@ -111,7 +111,7 @@ export default function Footer() {
                   className={[
                     'text-xs transition',
                     l.strong
-                      ? 'font-bold text-white/80 hover:text-white'
+                      ? 'font-medium text-white/80 hover:text-white'
                       : 'text-white/40 hover:text-white/70',
                   ].join(' ')}
                 >

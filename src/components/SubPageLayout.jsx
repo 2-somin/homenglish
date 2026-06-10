@@ -14,7 +14,7 @@ export default function SubPageLayout({ sectionTitle, tabs, headLabel, children 
       <div className="sticky top-20 z-30 bg-white shadow-sm">
         <div className="mx-auto max-w-container px-4 pt-12 md:px-10 lg:px-20">
           <div className="flex flex-col-reverse justify-between md:flex-row">
-            <h2 className="mb-6 text-4xl font-bold leading-none text-stone-500 md:mb-12 md:text-5xl">
+            <h2 className="mb-6 text-4xl font-medium leading-none text-stone-500 md:mb-12 md:text-5xl">
               {sectionTitle}
             </h2>
             <p className="mb-4 text-sm font-medium text-zinc-500 md:mb-0">
@@ -22,7 +22,7 @@ export default function SubPageLayout({ sectionTitle, tabs, headLabel, children 
             </p>
           </div>
 
-          <ul className="flex w-full justify-around overflow-x-auto font-bold">
+          <ul className="flex w-full justify-around overflow-x-auto font-medium">
             {tabs.map((t) => (
               <li key={t.to} className="shrink-0">
                 <NavLink

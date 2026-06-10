@@ -6,8 +6,13 @@ import ScrollToTopButton from './components/ScrollToTopButton'
 
 import Home from './pages/Home'
 import Contents from './pages/Contents'
+import ContentDetail from './pages/ContentDetail'
 import About from './pages/About'
 import SimplePage from './pages/SimplePage'
+import Login from './pages/Login'
+import Board from './pages/Board'
+import BoardDetail from './pages/BoardDetail'
+import BoardWrite from './pages/BoardWrite'
 
 export default function App() {
   return (
@@ -26,11 +31,22 @@ export default function App() {
           <Route path="/types" element={<Navigate to="/types/free" replace />} />
           <Route path="/types/:type" element={<Contents mode="type" />} />
 
+          {/* 콘텐츠 상세 */}
+          <Route path="/content/:id" element={<ContentDetail />} />
+
           {/* 소개 / 기타 */}
           <Route path="/about" element={<About />} />
           <Route path="/level-test" element={<SimplePage title="레벨테스트" />} />
           <Route path="/guide" element={<SimplePage title="이용안내" />} />
           <Route path="/privacy" element={<SimplePage title="개인정보처리방침" />} />
+
+          {/* 로그인 */}
+          <Route path="/login" element={<Login />} />
+
+          {/* 게시판 — /board/write가 /board/:id 보다 먼저 와야 함 */}
+          <Route path="/board/write" element={<BoardWrite />} />
+          <Route path="/board/:id" element={<BoardDetail />} />
+          <Route path="/board" element={<Board />} />
 
           <Route path="*" element={<SimplePage title="페이지를 찾을 수 없습니다" />} />
         </Routes>

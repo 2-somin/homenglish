@@ -57,7 +57,7 @@ const certifications = [
 
 function SectionTitle({ children }) {
   return (
-    <h3 className="mb-10 flex items-end justify-between border-b-2 border-stone-300 pb-8 text-3xl font-bold text-brand md:text-4xl">
+    <h3 className="mb-10 flex items-end justify-between border-b-2 border-stone-300 pb-8 text-3xl font-medium text-brand md:text-4xl">
       {children}
     </h3>
   )
@@ -74,7 +74,7 @@ function QualityContent() {
       {/* 품질 경영 선언 */}
       <section className="mb-20">
         <SectionTitle>품질 경영 선언</SectionTitle>
-        <p className="text-2xl font-bold">“고객감동을 완성하는 최고의 품질”</p>
+        <p className="text-2xl font-medium">“고객감동을 완성하는 최고의 품질”</p>
         <p className="mt-3 text-lg font-medium leading-8 text-neutral-700">
           품질을 기업 경쟁력의 근간으로 인식하고 전 사업 영역에서 최고의 품질을 실현하기 위하여
           설계, 구매, 시공 및 유지관리 전 과정에 걸쳐 체계적인 품질경영시스템을 구축·운영하며,
@@ -93,7 +93,7 @@ function QualityContent() {
               key={p.title}
               className="flex-grow basis-72 rounded-xl bg-neutral-100 p-8 md:p-10"
             >
-              <p className="text-xl font-bold">{p.title}</p>
+              <p className="text-xl font-medium">{p.title}</p>
               <p className="mt-3 text-base font-medium leading-8 text-neutral-700">
                 {p.desc}
               </p>
@@ -112,7 +112,7 @@ function QualityContent() {
                 <Placeholder label={`인증서 — ${c.name}`} ratio="7/10" />
               </div>
               <div className="flex flex-col justify-center gap-5">
-                <p className="text-2xl font-bold">{c.name}</p>
+                <p className="text-2xl font-medium">{c.name}</p>
                 <ul className="flex flex-col gap-2.5 text-base font-medium leading-7 text-neutral-700 md:text-lg">
                   {c.items.map((it, i) => (
                     <li key={i} className="pl-2">

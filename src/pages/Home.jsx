@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { contents, categories, faqs, site } from '../data/site'
+import { categories, faqs, site } from '../data/site'
+import { useSheetData } from '../hooks/useSheetData'
 import ContentCard from '../components/ContentCard'
 
 // ── 히어로 ────────────────────────────────────────────────
@@ -13,10 +14,10 @@ function Hero() {
       </div>
 
       <div className="relative z-10 w-full max-w-container mx-auto section-x py-20 md:py-28">
-        <p className="text-palette-yellow text-sm md:text-base font-bold tracking-widest uppercase mb-4">
+        <p className="text-palette-yellow text-sm md:text-base font-medium tracking-widest uppercase mb-4">
           엄마표 영어 · 가정학습 커뮤니티
         </p>
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-5">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight mb-5">
           가정 영어 학습의 첫 걸음,<br />
           <span className="text-palette-yellow">홈글리시</span>
         </h1>
@@ -27,7 +28,7 @@ function Hero() {
         <div className="flex flex-wrap gap-3">
           <Link
             to="/contents/all"
-            className="inline-flex items-center gap-2 bg-palette-yellow text-brand font-bold px-6 py-3.5 rounded-full hover:bg-white transition shadow-lg text-sm md:text-base"
+            className="inline-flex items-center gap-2 bg-palette-yellow text-brand font-medium px-6 py-3.5 rounded-full hover:bg-white transition shadow-lg text-sm md:text-base"
           >
             콘텐츠 둘러보기 →
           </Link>
@@ -76,10 +77,10 @@ function Intro() {
     <section className="max-w-container mx-auto section-x py-16 md:py-24">
       <div className="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <p className="text-brand dark:text-brand-light text-sm font-bold tracking-widest uppercase mb-3">
+          <p className="text-brand dark:text-brand-light text-sm font-medium tracking-widest uppercase mb-3">
             영어 가정학습, 홈글리시가 함께해요
           </p>
-          <h2 className="text-2xl md:text-4xl font-extrabold text-neutral-800 dark:text-neutral-100 leading-snug mb-6">
+          <h2 className="text-2xl md:text-4xl font-semibold text-neutral-800 dark:text-neutral-100 leading-snug mb-6">
             홈글리시는 부모와 아이가<br />
             함께하는{' '}
             <span className="text-brand dark:text-brand-light">영어 가정학습의<br />모든 것</span>을 담은 플랫폼입니다.
@@ -102,7 +103,7 @@ function Intro() {
               <div className={`w-11 h-11 rounded-xl ${f.color} flex items-center justify-center text-2xl mb-3`}>
                 {f.emoji}
               </div>
-              <h3 className="font-bold text-neutral-800 dark:text-neutral-100 text-sm mb-1">{f.title}</h3>
+              <h3 className="font-medium text-neutral-800 dark:text-neutral-100 text-sm mb-1">{f.title}</h3>
               <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">{f.desc}</p>
             </div>
           ))}
@@ -114,17 +115,18 @@ function Intro() {
 
 // ── 선호도 Top 10 ─────────────────────────────────────────
 function Top10() {
-  const featured = contents.filter((c) => c.featured).slice(0, 6)
+  const { contents } = useSheetData()
+  const featured = contents.slice(0, 6)
 
   return (
     <section className="bg-surface-2 dark:bg-surface-2dark transition-colors py-16 md:py-24">
       <div className="max-w-container mx-auto section-x">
         <div className="flex items-end justify-between mb-2 flex-wrap gap-4">
           <div>
-            <p className="text-brand dark:text-brand-light text-sm font-bold tracking-widest uppercase mb-2">
+            <p className="text-brand dark:text-brand-light text-sm font-medium tracking-widest uppercase mb-2">
               홈글리시 Pick
             </p>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-800 dark:text-neutral-100">
+            <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 dark:text-neutral-100">
               선호도가 높은 콘텐츠 Top 10
             </h2>
           </div>
@@ -168,10 +170,10 @@ function CategoryBrowse() {
 
   return (
     <section className="max-w-container mx-auto section-x py-16 md:py-24">
-      <p className="text-brand dark:text-brand-light text-sm font-bold tracking-widest uppercase mb-2">
+      <p className="text-brand dark:text-brand-light text-sm font-medium tracking-widest uppercase mb-2">
         학습 주제별 탐색
       </p>
-      <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-800 dark:text-neutral-100 mb-2">
+      <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 dark:text-neutral-100 mb-2">
         다양한 학습 소스를 검색해보세요
       </h2>
       <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-10">
@@ -197,7 +199,7 @@ function CategoryBrowse() {
       <div className="text-center">
         <Link
           to="/contents/all"
-          className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-bold px-8 py-3.5 rounded-full hover:opacity-90 transition shadow text-sm md:text-base"
+          className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-medium px-8 py-3.5 rounded-full hover:opacity-90 transition shadow text-sm md:text-base"
         >
           전체 콘텐츠 보기 →
         </Link>
@@ -213,10 +215,10 @@ function MissionBand() {
       <div className="max-w-container mx-auto section-x">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <p className="text-palette-yellow text-sm font-bold tracking-widest uppercase mb-4">
+            <p className="text-palette-yellow text-sm font-medium tracking-widest uppercase mb-4">
               임팩트닷 커리어 프로젝트 선정
             </p>
-            <h2 className="text-2xl md:text-4xl font-extrabold text-white leading-snug mb-6">
+            <h2 className="text-2xl md:text-4xl font-semibold text-white leading-snug mb-6">
               10분의 1 프로젝트
             </h2>
             <p className="text-white/80 text-base leading-relaxed mb-6">
@@ -233,7 +235,7 @@ function MissionBand() {
               { label: '이런 가정에 잘 맞아요', emoji: '✅', items: ['아이에게 집에서 영어를 가르쳐보고 싶은 부모', '사교육비 부담을 줄이고 싶은 가정', '뭐부터 해야 할지 몰라 헤매는 부모', '아이 수준에 맞는 자료를 찾고 싶은 가정'] }
             ].map((section) => (
               <div key={section.label} className="col-span-2 bg-white/10 rounded-2xl p-6">
-                <p className="text-palette-yellow font-bold text-sm mb-4">{section.emoji} {section.label}</p>
+                <p className="text-palette-yellow font-medium text-sm mb-4">{section.emoji} {section.label}</p>
                 <ul className="space-y-2">
                   {section.items.map((item) => (
                     <li key={item} className="flex items-start gap-2 text-white/80 text-sm">
@@ -257,7 +259,7 @@ function ReviewCTA() {
     <section className="bg-surface-2 dark:bg-surface-2dark py-16 md:py-20 transition-colors">
       <div className="max-w-container mx-auto section-x text-center">
         <p className="text-4xl mb-4">☕</p>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-800 dark:text-neutral-100 mb-3">
+        <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 dark:text-neutral-100 mb-3">
           이젠, 여러분의 학습 경험을 들려주세요
         </h2>
         <p className="text-neutral-500 dark:text-neutral-400 mb-2 text-sm md:text-base max-w-lg mx-auto">
@@ -270,7 +272,7 @@ function ReviewCTA() {
           href={site.contact.notion}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-bold px-8 py-4 rounded-full hover:opacity-90 transition shadow-lg text-sm md:text-base"
+          className="inline-flex items-center gap-2 bg-brand dark:bg-brand-light text-white dark:text-bg-dark font-medium px-8 py-4 rounded-full hover:opacity-90 transition shadow-lg text-sm md:text-base"
         >
           📝 후기 작성하기
         </a>
@@ -285,10 +287,10 @@ function FAQ() {
 
   return (
     <section className="max-w-container mx-auto section-x py-16 md:py-24">
-      <p className="text-brand dark:text-brand-light text-sm font-bold tracking-widest uppercase mb-2">
+      <p className="text-brand dark:text-brand-light text-sm font-medium tracking-widest uppercase mb-2">
         자주 묻는 질문
       </p>
-      <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-800 dark:text-neutral-100 mb-3">
+      <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 dark:text-neutral-100 mb-3">
         홈글리시에 대해 궁금한 게 있으신가요?
       </h2>
       <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-10">

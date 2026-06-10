@@ -34,7 +34,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Pretendard', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Poppins', 'GmarketSans', 'system-ui', '-apple-system', 'sans-serif'],
       },
       maxWidth: {
         container: '1400px',

@@ -1,58 +1,44 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { contents, categories, types } from '../data/site'
+import { categories, types } from '../data/site'
+import { useSheetData } from '../hooks/useSheetData'
 import ContentCard from '../components/ContentCard'
 import Pagination from '../components/Pagination'
 
 const PER_PAGE = 9
 
-// 카테고리 탭 순서
-const catOrder = ['all', 'speaking', 'listening', 'reading', 'writing', 'vocabulary', 'grammar']
-
-// 유형 탭 순서
+const catOrder = ['all', 'reading', 'grammar', 'vocabulary', 'listening', 'phonics', 'app']
 const typeOrder = ['free', 'paid', 'video', 'worksheet', 'app', 'book']
 
 export default function Contents({ mode }) {
   const { category, type } = useParams()
   const [typeFilter, setTypeFilter] = useState('all')
   const [page, setPage] = useState(1)
+  const { contents, loading, error } = useSheetData()
 
-  // mode 또는 파라미터가 바뀌면 페이지, 타입 필터 초기화
   useEffect(() => {
     setPage(1)
     setTypeFilter('all')
   }, [category, type, mode])
 
-  // 현재 필터링된 콘텐츠
   const filtered = useMemo(() => {
     let list = contents
 
     if (mode === 'category' && category && category !== 'all') {
       list = list.filter((c) => c.category === category)
     }
-
     if (mode === 'type' && type) {
       list = list.filter((c) => c.types.includes(type))
     }
-
     if (typeFilter !== 'all') {
       list = list.filter((c) => c.types.includes(typeFilter))
     }
 
     return list
-  }, [category, type, mode, typeFilter])
+  }, [contents, category, type, mode, typeFilter])
 
   const totalPages = Math.ceil(filtered.length / PER_PAGE)
   const paged = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
-
-  // 현재 페이지의 타이틀 정보
-  const pageTitle =
-    mode === 'category'
-      ? categories[category] || categories.all
-      : types[type]
-
-  const pageLabelCat = mode === 'category' ? (category || 'all') : null
-  const pageLabelType = mode === 'type' ? type : null
 
   const colorBg = {
     peach: 'bg-palette-peach',
@@ -68,7 +54,7 @@ export default function Contents({ mode }) {
 
   return (
     <div>
-      {/* 페이지 배너 */}
+      {/* 배너 */}
       <div className={`${bannerColor} dark:opacity-90`}>
         <div className="max-w-container mx-auto section-x py-10 md:py-14">
           <nav className="text-xs text-neutral-700 mb-4 flex items-center gap-2">
@@ -80,7 +66,7 @@ export default function Contents({ mode }) {
                 {category && category !== 'all' && (
                   <>
                     <span>›</span>
-                    <span className="font-bold">{categories[category]?.label}</span>
+                    <span className="font-medium">{categories[category]?.label}</span>
                   </>
                 )}
               </>
@@ -88,7 +74,7 @@ export default function Contents({ mode }) {
               <>
                 <Link to="/types/free" className="hover:underline font-medium">유형별 콘텐츠</Link>
                 <span>›</span>
-                <span className="font-bold">{types[type]?.label}</span>
+                <span className="font-medium">{types[type]?.label}</span>
               </>
             )}
           </nav>
@@ -100,7 +86,7 @@ export default function Contents({ mode }) {
                 : types[type]?.emoji}
             </span>
             <div>
-              <h1 className="text-2xl md:text-4xl font-extrabold text-neutral-800 leading-tight">
+              <h1 className="text-2xl md:text-4xl font-semibold text-neutral-800 leading-tight">
                 {mode === 'category'
                   ? (categories[category] || categories.all).label
                   : `${types[type]?.label} 콘텐츠`}
@@ -116,7 +102,7 @@ export default function Contents({ mode }) {
       </div>
 
       <div className="max-w-container mx-auto section-x py-10 md:py-14">
-        {/* 주제별 탭 (category 모드일 때) */}
+        {/* 카테고리 탭 */}
         {mode === 'category' && (
           <div className="mb-8 overflow-x-auto pb-2">
             <div className="flex gap-2 w-max">
@@ -144,7 +130,7 @@ export default function Contents({ mode }) {
           </div>
         )}
 
-        {/* 유형별 탭 (type 모드일 때) */}
+        {/* 유형별 탭 */}
         {mode === 'type' && (
           <div className="mb-8 overflow-x-auto pb-2">
             <div className="flex gap-2 w-max">
@@ -172,7 +158,7 @@ export default function Contents({ mode }) {
           </div>
         )}
 
-        {/* 보조 필터: 유형 (category 모드에서만 추가 제공) */}
+        {/* 유형 보조 필터 (카테고리 모드) */}
         {mode === 'category' && (
           <div className="mb-8 flex items-center gap-2 flex-wrap">
             <span className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider mr-1">
@@ -185,7 +171,7 @@ export default function Contents({ mode }) {
                 'px-3 py-1.5 rounded-full text-xs font-semibold border transition',
                 typeFilter === 'all'
                   ? 'bg-brand text-white border-brand dark:bg-brand-light dark:text-bg-dark'
-                  : 'bg-white dark:bg-surface-dark text-neutral-500 dark:text-neutral-400 border-neutral-200 dark:border-neutral-600 hover:border-brand dark:hover:border-brand-light',
+                  : 'bg-white dark:bg-surface-dark text-neutral-500 dark:text-neutral-400 border-neutral-200 dark:border-neutral-600 hover:border-brand',
               ].join(' ')}
             >
               전체
@@ -201,7 +187,7 @@ export default function Contents({ mode }) {
                     'flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold border transition',
                     typeFilter === key
                       ? 'bg-brand text-white border-brand dark:bg-brand-light dark:text-bg-dark'
-                      : 'bg-white dark:bg-surface-dark text-neutral-500 dark:text-neutral-400 border-neutral-200 dark:border-neutral-600 hover:border-brand dark:hover:border-brand-light',
+                      : 'bg-white dark:bg-surface-dark text-neutral-500 dark:text-neutral-400 border-neutral-200 dark:border-neutral-600 hover:border-brand',
                   ].join(' ')}
                 >
                   {t.emoji} {t.label}
@@ -211,20 +197,42 @@ export default function Contents({ mode }) {
           </div>
         )}
 
-        {/* 결과 카운트 */}
-        <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6">
-          총 <strong className="text-brand dark:text-brand-light">{filtered.length}개</strong>의 콘텐츠
-          {totalPages > 1 && ` · 페이지 ${page} / ${totalPages}`}
-        </p>
+        {/* 결과 수 */}
+        {!loading && (
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6">
+            총{' '}
+            <strong className="text-brand dark:text-brand-light">{filtered.length}개</strong>의
+            콘텐츠{totalPages > 1 && ` · 페이지 ${page} / ${totalPages}`}
+          </p>
+        )}
+
+        {/* 로딩 */}
+        {loading && (
+          <div className="flex items-center justify-center py-24">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-10 h-10 border-4 border-brand border-t-transparent rounded-full animate-spin" />
+              <p className="text-neutral-400 text-sm">콘텐츠 불러오는 중...</p>
+            </div>
+          </div>
+        )}
+
+        {/* 에러 */}
+        {error && (
+          <div className="rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-6 text-center">
+            <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+          </div>
+        )}
 
         {/* 콘텐츠 그리드 */}
-        {paged.length > 0 ? (
+        {!loading && !error && paged.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {paged.map((item) => (
               <ContentCard key={item.id} item={item} />
             ))}
           </div>
-        ) : (
+        )}
+
+        {!loading && !error && paged.length === 0 && (
           <div className="text-center py-20">
             <p className="text-5xl mb-4">🔍</p>
             <p className="text-neutral-500 dark:text-neutral-400 text-lg font-medium">
@@ -236,7 +244,6 @@ export default function Contents({ mode }) {
           </div>
         )}
 
-        {/* 페이지네이션 */}
         <Pagination
           page={page}
           totalPages={totalPages}

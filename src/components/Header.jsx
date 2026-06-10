@@ -45,7 +45,7 @@ export default function Header() {
           {/* 로고 */}
           <Link to="/" className="flex items-center shrink-0">
             <img
-              src="/rest04/homeglish_logo_kr.png"
+              src="/homenglish/homeglish_logo_kr.png"
               alt={`${site.nameKo} ${site.name}`}
               className="h-10 w-auto object-contain"
             />
@@ -163,7 +163,7 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
               >
                 <img
-                  src="/rest04/homeglish_logo_kr.png"
+                  src="/homenglish/homeglish_logo_kr.png"
                   alt={`${site.nameKo} ${site.name}`}
                   className="h-8 w-auto object-contain"
                 />

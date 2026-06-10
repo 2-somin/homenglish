@@ -32,7 +32,7 @@ export default function Login() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
         options: {
-          redirectTo: window.location.origin + '/rest04/',
+          redirectTo: window.location.origin + '/homenglish/',
         },
       })
       if (error) throw error

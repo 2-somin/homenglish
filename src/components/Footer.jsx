@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center mb-4">
               <img
-                src="/rest04/homeglish_logo_kr.png"
+                src="/homenglish/homeglish_logo_kr.png"
                 alt={`${site.nameKo} ${site.name}`}
                 className="h-9 w-auto object-contain brightness-0 invert"
               />

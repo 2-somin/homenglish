@@ -33,6 +33,7 @@ export default function Login() {
         provider: 'kakao',
         options: {
           redirectTo: window.location.origin + '/homenglish/',
+          scopes: 'profile_image profile_nickname',
         },
       })
       if (error) throw error

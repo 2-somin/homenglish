@@ -11,6 +11,17 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate()
 
   useEffect(() => {
+    // OAuth 콜백 처리 — 페이지 로드 시 hash에 access_token이 있으면 즉시 처리
+    if (window.location.hash.includes('access_token')) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session)
+        setUser(session?.user ?? null)
+        setLoading(false)
+        window.location.replace(window.location.origin + window.location.pathname + '#/')
+      })
+      return
+    }
+
     // 초기 세션 로드
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
@@ -23,11 +34,6 @@ export function AuthProvider({ children }) {
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
-
-      // OAuth 콜백 처리 — hash에 access_token이 있을 때 홈으로 이동
-      if (event === 'SIGNED_IN' && window.location.hash.includes('access_token')) {
-        navigate('/', { replace: true })
-      }
     })
 
     return () => subscription.unsubscribe()

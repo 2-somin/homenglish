@@ -1,6 +1,4 @@
-import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { supabase } from './lib/supabase'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -18,19 +16,6 @@ import BoardWrite from './pages/BoardWrite'
 import OAuthCallback from './pages/OAuthCallback'
 
 export default function App() {
-  // PKCE OAuth 콜백: ?code= 감지 → 세션 교환
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const code = params.get('code')
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(() => {
-        // URL에서 code 제거 (리로드 없이)
-        const clean = window.location.pathname + window.location.hash
-        window.history.replaceState({}, '', clean)
-      })
-    }
-  }, [])
-
   return (
     <div className="min-w-[320px] flex flex-col min-h-screen">
       <ScrollToTop />

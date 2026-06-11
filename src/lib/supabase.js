@@ -11,5 +11,7 @@ const supabaseAnonKey =
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     flowType: 'pkce',
+    // 자동 URL 감지를 끔 — AuthContext에서 수동으로 처리하여 경쟁 조건 방지
+    detectSessionInUrl: false,
   },
 })

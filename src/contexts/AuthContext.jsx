@@ -13,48 +13,79 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let mounted = true
 
-    // onAuthStateChange를 먼저 구독해 두어 이후 모든 상태 변화를 감지한다
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+    const applySession = (s) => {
       if (!mounted) return
-      setSession(newSession)
-      setUser(newSession?.user ?? null)
+      setSession(s)
+      setUser(s?.user ?? null)
+      setLoading(false)
+    }
+
+    // onAuthStateChange를 가장 먼저 구독
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+      if (!mounted) return
+      setSession(s)
+      setUser(s?.user ?? null)
       setLoading(false)
     })
 
-    // OAuth PKCE 콜백: main.jsx에서 저장한 code로 세션 교환
-    const oauthCode = sessionStorage.getItem('_oauth_code')
-    if (oauthCode) {
-      sessionStorage.removeItem('_oauth_code')
-      supabase.auth.exchangeCodeForSession(oauthCode)
-        .then(({ data: { session: newSession }, error }) => {
+    const init = async () => {
+      // ── PKCE: ?code= ──────────────────────────────────────────
+      const oauthCode = sessionStorage.getItem('_oauth_code')
+      if (oauthCode) {
+        sessionStorage.removeItem('_oauth_code')
+        try {
+          const { data, error } = await supabase.auth.exchangeCodeForSession(oauthCode)
           if (!mounted) return
-          if (error) {
-            console.error('[OAuth] 세션 교환 실패:', error.message)
-            setLoading(false)
+          if (!error && data.session) {
+            applySession(data.session)
+            navigate('/', { replace: true })
             return
           }
-          if (newSession) {
-            setSession(newSession)
-            setUser(newSession.user)
-            setLoading(false)
-            navigate('/', { replace: true })
-          } else {
-            setLoading(false)
-          }
-        })
-        .catch((err) => {
-          console.error('[OAuth] 예외:', err)
-          if (mounted) setLoading(false)
-        })
-    } else {
-      // 일반 세션 복구 (localStorage에 저장된 기존 세션)
-      supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
+          // exchange 실패 → 이미 처리됐을 수도 있으니 getSession 폴백
+          console.warn('[OAuth PKCE] exchange 실패, getSession 시도:', error?.message)
+        } catch (e) {
+          console.warn('[OAuth PKCE] 예외:', e)
+        }
+        // 폴백: Supabase 내부에서 이미 처리된 경우 세션이 있을 수 있음
+        const { data: { session: s } } = await supabase.auth.getSession()
         if (!mounted) return
-        setSession(existingSession)
-        setUser(existingSession?.user ?? null)
-        setLoading(false)
-      })
+        if (s) {
+          applySession(s)
+          navigate('/', { replace: true })
+          return
+        }
+        applySession(null)
+        return
+      }
+
+      // ── Implicit flow: #access_token= ─────────────────────────
+      const tokensRaw = sessionStorage.getItem('_oauth_tokens')
+      if (tokensRaw) {
+        sessionStorage.removeItem('_oauth_tokens')
+        try {
+          const { access_token, refresh_token } = JSON.parse(tokensRaw)
+          const { data, error } = await supabase.auth.setSession({ access_token, refresh_token })
+          if (!mounted) return
+          if (!error && data.session) {
+            applySession(data.session)
+            navigate('/', { replace: true })
+            return
+          }
+          console.warn('[OAuth Implicit] setSession 실패:', error?.message)
+        } catch (e) {
+          console.warn('[OAuth Implicit] 예외:', e)
+        }
+        applySession(null)
+        return
+      }
+
+      // ── 일반 세션 복구 ────────────────────────────────────────
+      const { data: { session: s } } = await supabase.auth.getSession()
+      if (!mounted) return
+      applySession(s)
     }
+
+    init()
 
     return () => {
       mounted = false
